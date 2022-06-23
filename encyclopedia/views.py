@@ -1,8 +1,14 @@
 from django.shortcuts import render
 import markdown
-
+from django import forms
+from django.http import HttpResponse, HttpRequest
 
 from . import util
+
+# class fore represting a form
+class NewTaskForm(forms.Form):
+    # create fields of the form
+    search = forms.CharField()
 
 
 def index(request):
@@ -20,3 +26,8 @@ def entry(request, title):
             "title": title.capitalize(),
         },
     )
+
+
+def result(request: HttpRequest):
+    if request.method == "POST":
+        query = request.POST["q"]
