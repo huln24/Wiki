@@ -5,5 +5,12 @@
 {% endblock %}
 
 {% block body %}
+<form method="post" action="/wiki/{{title}}/edit">
+    {% csrf_token %}
+    <div id="nav">
+        <span id="edit"><a href="/wiki/{{title}}/edit">Edit Page</a></span>
+        <input name="title" value="{{title}}" type="hidden">
+    </div>
+</form>
 {{entry |safe}}
 {% endblock %}

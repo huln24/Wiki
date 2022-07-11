@@ -13,7 +13,7 @@ h1 {
 }
 
 textarea {
-    height: 90vh;
+    height: 70vh;
     width: 80%;
 }
 
@@ -37,6 +37,11 @@ textarea {
     margin-top: 5px;
 }
 
-#id_content {
-    height: 75vh;
+#nav {
+    text-align: right;
+    background-color: whitesmoke;
+}
+
+#edit {
+    margin-right: 40px;
 }

@@ -44,6 +44,10 @@ def newpage(request):
 
 
 def entry(request, title):
+    if request.method == "POST":
+        new_content = request.POST["content"]
+        util.save_entry(title, new_content)
+        return redirect(entry, title=title)
     if util.get_entry(title) == None:
         return render(request, "encyclopedia/error.html")
     return render(
@@ -82,3 +86,15 @@ def result(request: HttpRequest):
 def randompage(request):
     randomp = random.choice(util.list_entries())
     return redirect(entry, title=randomp)
+
+
+def edit(request, title):
+    # if request.method == "POST":
+    #   new_content = request.POST["content"]
+    #  util.save_entry(title, new_content)
+    # return redirect(entry, title=title)
+    return render(
+        request,
+        "encyclopedia/edit.html",
+        {"title": title, "content": util.get_entry(title)},
+    )
