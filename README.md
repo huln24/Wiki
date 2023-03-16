@@ -29,7 +29,7 @@ pip3 install markdown2
 
 ### Features
 Search for encyclopedia entry
-> If query matches the name of an entry, user is reirected to that entry's page [space]
+> If query matches the name of an entry, user is reirected to that entry's page [space][space]
 If query doesn't match the name of an entry, display list of entry names that contains the query as substring
 
 Create new encyclopedia entry
