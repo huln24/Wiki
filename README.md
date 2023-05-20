@@ -14,15 +14,15 @@ A Wikipedia-like online encyclopedia.
 
 - Search for encyclopedia entry
 
-> If query matches the name of an entry, user is reirected to that entry's page
+  - If query matches the name of an entry, user is reirected to that entry's page
 
-> If query doesn't match the name of an entry, display list of entry names that contains the query as substring
+  - If query doesn't match the name of an entry, display list of entry names that contains the query as substring
 
 - Create new encyclopedia entry
 
 - Edit encyclopedia entry's content
 
-> Modify Markown content of an entry
+  - Modify Markown content of an entry
 
 - Random Page generator
 
