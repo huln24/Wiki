@@ -7,10 +7,11 @@ from re import search
 import random
 from . import util
 
-# class fore represting a form
-class NewTaskForm(forms.Form):
+# class for represting a form
+class NewEntryForm(forms.Form):
     # create fields of the form
-    search = forms.CharField()
+    title = forms.CharField(label="Page Title:")
+    content = forms.CharField(label="Content of the page:", widget=forms.Textarea)
 
 
 def index(request):
@@ -18,10 +19,35 @@ def index(request):
 
 
 def newpage(request):
-    return render(request, "encyclopedia/newpage.html")
+    # If user sumbmitted some data, put data inside form variable
+    if request.method == "POST":
+        newEntry = NewEntryForm(request.POST)
+        if newEntry.is_valid():
+            title = request.POST["title"]
+            content = request.POST["content"]
+            if title.lower() in (string.lower() for string in util.list_entries()):
+                return render(
+                    request,
+                    "encyclopedia/newpage.html",
+                    {
+                        "errormsg": 'Error! \nAn entry with title "'
+                        + title
+                        + '" already exists.',
+                        "form": newEntry,
+                    },
+                )
+            else:
+                util.save_entry(title, content)
+                return redirect(entry, title=title)
+        # if form is not valid, pass bback the form that they sumbitted
+    return render(request, "encyclopedia/newpage.html", {"form": NewEntryForm})
 
 
 def entry(request, title):
+    if request.method == "POST":
+        new_content = request.POST["content"]
+        util.save_entry(title, new_content)
+        return redirect(entry, title=title)
     if util.get_entry(title) == None:
         return render(request, "encyclopedia/error.html")
     return render(
@@ -29,7 +55,7 @@ def entry(request, title):
         "encyclopedia/entry.html",
         {
             "entry": markdown.markdown(util.get_entry(title)),
-            "title": title.capitalize(),
+            "title": title,
         },
     )
 
@@ -45,7 +71,7 @@ def result(request: HttpRequest):
                 "encyclopedia/entry.html",
                 {
                     "entry": markdown.markdown(util.get_entry(query)),
-                    "title": query.capitalize(),
+                    "title": query,
                 },
             )
         for entry in entries:
@@ -60,3 +86,15 @@ def result(request: HttpRequest):
 def randompage(request):
     randomp = random.choice(util.list_entries())
     return redirect(entry, title=randomp)
+
+
+def edit(request, title):
+    # if request.method == "POST":
+    #   new_content = request.POST["content"]
+    #  util.save_entry(title, new_content)
+    # return redirect(entry, title=title)
+    return render(
+        request,
+        "encyclopedia/edit.html",
+        {"title": title, "content": util.get_entry(title)},
+    )
